@@ -1,0 +1,68 @@
+package com.algo.test.config;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+import java.math.BigInteger;
+
+/**
+ * Created by adigo on 10/07/2017.
+ */
+@RunWith(JUnit4.class)
+public class AbstractTest {
+
+    @Test
+    public void name() {
+
+        Solution solution = new Solution();
+        ListNode l1 = solution.toListNode(new BigInteger("18"));
+        ListNode l2 = solution.toListNode(new BigInteger("0"));
+
+        ListNode l3 = solution.addTwoNumbers(l1,l2);
+        System.out.println(solution.toBIgInteger(l3).toString());
+
+
+    }
+
+    class ListNode{
+        int val;
+        ListNode next;
+
+        public ListNode(int val) {
+            this.val = val;
+        }
+    }
+
+    public class Solution {
+        public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+            BigInteger l2AsBigInteger = toBIgInteger(l2);
+            BigInteger sum = toBIgInteger(l1).add(l2AsBigInteger);
+            return  toListNode(sum);
+        }
+
+        BigInteger toBIgInteger(ListNode listNode){
+            String result = listNode.val+"";
+            for(ListNode l = listNode.next; l!=null; l=l.next){
+                result += String.valueOf(l.val);
+            }
+            return new BigInteger(result);
+        }
+
+        ListNode toListNode(BigInteger val){
+            String reversedValAsString = new StringBuffer(val.toString()).reverse().toString();
+            char[] chars = reversedValAsString.toCharArray();
+            ListNode[] listNodes = new ListNode[chars.length];
+
+            for (int i = 0; i < chars.length; i++) {
+                listNodes[i] = new ListNode(Integer.valueOf(String.valueOf(chars[i])));
+                if(i>0 && listNodes[i-1] != null){
+                    listNodes[i-1].next = listNodes[i];
+                }
+            }
+
+            return listNodes[0];
+        }
+    }
+
+}
